@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absen Guru - Munazir</title>
+    <title>Absen Guru</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -26,10 +26,10 @@
         </div>
         
         <div class="teacher-card">
-            <img src="https://edisamsuar.github.io/contactguru/Tgk-Munazir.jpg" alt="Foto Guru" class="teacher-photo">
+            <img src="https://www.iconpacks.net/icons/2/free-user-icon-3297-thumb.png" alt="Foto Guru" class="teacher-photo">
             <div class="teacher-info">
-                <div class="teacher-name">Tgk Munazir</div>
-                <div class="teacher-subject"><i class="fas fa-book"></i> Rombel: -  </div>
+                <div class="teacher-name">Tgk Fikri Haikal</div>
+                <div class="teacher-subject"><i class="fas fa-book"></i> Rombel: - </div>
             </div>
         </div>
         
@@ -96,7 +96,7 @@
                 loading.style.display = 'block';
                 
                 // URL untuk status Hadir
-                const presentUrl = `${baseFormUrl}?usp=pp_url&entry.782687226=Tgk+Munazir&entry.905421824=Malam&entry.147793750=Hadir`;
+                const presentUrl = `${baseFormUrl}?usp=pp_url&entry.782687226=Tgk+Fikri+Haikal&entry.905421824=Malam&entry.147793750=Hadir`;
                 
                 // Mengirim data menggunakan fetch API untuk mencegah redirect ganda
                 fetch(presentUrl, {
@@ -150,7 +150,7 @@
                 const replacementName = encodeURIComponent(replacementTeacher.value.trim());
                 
                 // URL untuk status Tidak Hadir dengan guru pengganti
-                const absentUrl = `${baseFormUrl}?usp=pp_url&entry.782687226=Tgk+Munazir&entry.905421824=Malam&entry.147793750=Tidak+Hadir&entry.1647198616=${replacementName}`;
+                const absentUrl = `${baseFormUrl}?usp=pp_url&entry.782687226=Tgk+Fikri+Haikal&entry.905421824=Malam&entry.147793750=Tidak+Hadir&entry.1647198616=${replacementName}`;
                 
                 // Mengirim data menggunakan fetch API untuk mencegah redirect ganda
                 fetch(absentUrl, {
