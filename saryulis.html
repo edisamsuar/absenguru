@@ -32,7 +32,10 @@
                 <div class="teacher-subject"><i class="fas fa-book"></i> Rombel: - </div>
             </div>
         </div>
-        
+        <div class="already-attended" id="already-attended">
+            <i class="fas fa-exclamation-circle"></i>
+            <p>Anda sudah absen malam ini, malam besok lagi</p>
+        </div>
         <div class="attendance-buttons">
             <button class="present-btn" id="present-btn">
                 <i class="fas fa-check-circle"></i> Hadir
@@ -64,7 +67,10 @@
             <p>Data kehadiran berhasil dikirim!</p>
         </div>
     </div>
-    
+    <div class="reset-container">
+            <button class="reset-btn" id="reset-btn">
+            </button>
+        </div>
     <div class="footer">
         &copy; 2025 Dayah Madinatuddiniyah Babussalam
     </div>
@@ -78,6 +84,8 @@
             const submitBtn = document.getElementById('submit-btn');
             const loading = document.getElementById('loading');
             const successMessage = document.getElementById('success-message');
+            const alreadyAttended = document.getElementById('already-attended');
+            const resetBtn = document.getElementById('reset-btn');
             
             // Flag untuk mencegah multiple submission
             let isSubmitting = false;
@@ -85,12 +93,56 @@
             // Base URL Google Forms
             const baseFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdEgNfZq2Pfa9n2QgkrEpZriN6ke-oYB9efq57FBbiKBpnHNA/formResponse";
             
+            // Kunci untuk localStorage
+            const LAST_ATTENDANCE_KEY = 'lastAttendanceTime';
+            
+            // Fungsi untuk memeriksa apakah sudah absen hari ini
+            function checkAttendanceStatus() {
+                const lastAttendanceTime = localStorage.getItem(LAST_ATTENDANCE_KEY);
+                
+                if (lastAttendanceTime) {
+                    const now = new Date().getTime();
+                    const timeDiff = now - parseInt(lastAttendanceTime);
+                    const hoursDiff = timeDiff / (1000 * 60 * 60);
+                    
+                    // Jika kurang dari 24 jam, nonaktifkan tombol absen
+                    if (hoursDiff < 10) {
+                        disableAttendanceButtons();
+                        alreadyAttended.style.display = 'block';
+                        return true;
+                    }
+                }
+                
+                return false;
+            }
+            
+            // Fungsi untuk menonaktifkan tombol absen
+            function disableAttendanceButtons() {
+                presentBtn.disabled = true;
+                absentBtn.disabled = true;
+            }
+            
+            // Fungsi untuk mengaktifkan tombol absen
+            function enableAttendanceButtons() {
+                presentBtn.disabled = false;
+                absentBtn.disabled = false;
+            }
+            
+            // Fungsi untuk menyimpan waktu absen terakhir
+            function saveAttendanceTime() {
+                const now = new Date().getTime();
+                localStorage.setItem(LAST_ATTENDANCE_KEY, now.toString());
+            }
+            
+            // Periksa status absen saat halaman dimuat
+            checkAttendanceStatus();
+            
             // Event listener untuk tombol Hadir
             presentBtn.addEventListener('click', function() {
-                if (isSubmitting) return; // Mencegah multiple clicks
+                if (isSubmitting || presentBtn.disabled) return; // Mencegah multiple clicks
                 
                 isSubmitting = true;
-                disableButtons();
+                disableAttendanceButtons();
                 
                 // Menampilkan loading
                 loading.style.display = 'block';
@@ -103,6 +155,9 @@
                     mode: 'no-cors'
                 })
                 .then(() => {
+                    // Simpan waktu absen
+                    saveAttendanceTime();
+                    
                     // Tampilkan pesan sukses
                     loading.style.display = 'none';
                     successMessage.style.display = 'block';
@@ -110,7 +165,6 @@
                     // Reset setelah 3 detik
                     setTimeout(() => {
                         successMessage.style.display = 'none';
-                        enableButtons();
                         isSubmitting = false;
                     }, 3000);
                 })
@@ -123,7 +177,7 @@
             
             // Event listener untuk tombol Tidak Hadir
             absentBtn.addEventListener('click', function() {
-                if (isSubmitting) return;
+                if (isSubmitting || absentBtn.disabled) return;
                 
                 replacementInput.classList.add('show');
                 replacementTeacher.focus();
@@ -140,7 +194,7 @@
                 }
                 
                 isSubmitting = true;
-                disableButtons();
+                disableAttendanceButtons();
                 
                 // Menampilkan loading
                 loading.style.display = 'block';
@@ -157,6 +211,9 @@
                     mode: 'no-cors'
                 })
                 .then(() => {
+                    // Simpan waktu absen
+                    saveAttendanceTime();
+                    
                     // Tampilkan pesan sukses
                     loading.style.display = 'none';
                     successMessage.style.display = 'block';
@@ -164,7 +221,6 @@
                     // Reset setelah 3 detik
                     setTimeout(() => {
                         successMessage.style.display = 'none';
-                        enableButtons();
                         isSubmitting = false;
                         replacementTeacher.value = '';
                     }, 3000);
@@ -176,19 +232,17 @@
                 });
             });
             
-            // Fungsi untuk menonaktifkan tombol
-            function disableButtons() {
-                presentBtn.disabled = true;
-                absentBtn.disabled = true;
-                submitBtn.disabled = true;
-            }
-            
-            // Fungsi untuk mengaktifkan kembali tombol
-            function enableButtons() {
-                presentBtn.disabled = false;
-                absentBtn.disabled = false;
-                submitBtn.disabled = false;
-            }
+            // Event listener untuk tombol Reset
+            resetBtn.addEventListener('click', function() {
+                const confirmReset = confirm('Reset Absen?.');
+                
+                if (confirmReset) {
+                    localStorage.removeItem(LAST_ATTENDANCE_KEY);
+                    enableAttendanceButtons();
+                    alreadyAttended.style.display = 'none';
+                    alert('Absen direset. .');
+                }
+            });
             
             // Animasi shape floating
             const shapes = document.querySelectorAll('.shape');

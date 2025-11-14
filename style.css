@@ -1,5 +1,4 @@
-
-        * {
+    * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -395,6 +394,41 @@
             background-image: 
                 repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255, 255, 255, 0.05) 10px, rgba(255, 255, 255, 0.05) 20px);
             z-index: -1;
+        }
+        
+        /* Gaya untuk pesan sudah absen */
+        .already-attended {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+            padding: 20px;
+            background: #fff3cd;
+            color: #856404;
+            border-radius: 15px;
+            border: 1px solid #ffeaa7;
+            margin-bottom: 15px;
+        }
+        
+        .already-attended i {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #ffc107;
+        }
+        
+        /* Gaya untuk tombol reset */
+        .reset-container {
+            text-align: center;
+          
+        }
+        
+        .reset-btn {
+            color: rgba(255, 255, 255, 0);
+            background-color: #0f7e3b00;
+        }
+        
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 117, 125, 0.4);
         }
         
         @media (max-width: 500px) {
